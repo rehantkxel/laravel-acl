@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Product;
+use App\Market;
 use Illuminate\Http\Request;
-class ProductController extends Controller
+class MarketController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -11,10 +11,10 @@ class ProductController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
-        $this->middleware('permission:product-create', ['only' => ['create','store']]);
-        $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:market-list|market-create|market-edit|market-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:market-create', ['only' => ['create','store']]);
+        $this->middleware('permission:market-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:market-delete', ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -23,8 +23,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(5);
-        return view('products.index',compact('products'))
+        $markets = Market::latest()->paginate(5);
+        return view('markets.index',compact('markets'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
     /**
@@ -34,7 +34,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('markets.create');
     }
     /**
      * Store a newly created resource in storage.
@@ -48,57 +48,57 @@ class ProductController extends Controller
             'name' => 'required',
             'detail' => 'required',
         ]);
-        Product::create($request->all());
-        return redirect()->route('products.index')
-            ->with('success','Product created successfully.');
+        Market::create($request->all());
+        return redirect()->route('markets.index')
+            ->with('success','Market created successfully.');
     }
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Market  $market
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Market $market)
     {
-        return view('products.show',compact('product'));
+        return view('markets.show',compact('market'));
     }
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Market  $market
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Market $market)
     {
-        return view('products.edit',compact('product'));
+        return view('markets.edit',compact('market'));
     }
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param  \App\Market  $market
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Market $market)
     {
         request()->validate([
             'name' => 'required',
             'detail' => 'required',
         ]);
-        $product->update($request->all());
-        return redirect()->route('products.index')
-            ->with('success','Product updated successfully');
+        $market->update($request->all());
+        return redirect()->route('markets.index')
+            ->with('success','Market updated successfully');
     }
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Market  $market
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Market $market)
     {
-        $product->delete();
-        return redirect()->route('products.index')
-            ->with('success','Product deleted successfully');
+        $market->delete();
+        return redirect()->route('markets.index')
+            ->with('success','Market deleted successfully');
     }
 }
